@@ -9,6 +9,7 @@ from deepagents_cli.config import (
     _find_project_agent_md,
     _find_project_root,
     create_model,
+    get_default_coding_instructions,
     settings,
     validate_model_capabilities,
 )
@@ -33,6 +34,7 @@ class TestProjectRootDetection:
         result = _find_project_root(subdir)
         assert result == project_root
 
+
     def test_find_project_root_no_git(self, tmp_path: Path) -> None:
         """Test that None is returned when no .git directory exists."""
         # Create directory without .git
@@ -56,6 +58,13 @@ class TestProjectRootDetection:
         # Should find inner repo, not outer
         result = _find_project_root(inner_repo)
         assert result == inner_repo
+
+
+def test_default_coding_instructions_support_explicit_user_protocols() -> None:
+    """Default instructions should allow user-defined strict response protocols."""
+    instructions = get_default_coding_instructions()
+    assert "strict response protocol" in instructions
+    assert "follow it exactly" in instructions
 
 
 class TestProjectAgentMdFinding:
