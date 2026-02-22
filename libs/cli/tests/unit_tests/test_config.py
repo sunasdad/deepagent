@@ -1,5 +1,4 @@
 """Tests for config module including project discovery utilities."""
-
 from pathlib import Path
 from unittest.mock import Mock, patch
 
@@ -60,11 +59,15 @@ class TestProjectRootDetection:
         assert result == inner_repo
 
 
-def test_default_coding_instructions_support_explicit_user_protocols() -> None:
-    """Default instructions should allow user-defined strict response protocols."""
-    instructions = get_default_coding_instructions()
-    assert "strict response protocol" in instructions
-    assert "follow it exactly" in instructions
+class TestDefaultCodingInstructions:
+    """Tests for default coding instruction content."""
+
+    def test_supports_explicit_user_protocols(self) -> None:
+        """Default instructions should allow user-defined strict response protocols."""
+        instructions = get_default_coding_instructions().lower()
+        assert "response protocol" in instructions
+        assert "required opening line" in instructions
+        assert "follow it exactly" in instructions
 
 
 class TestProjectAgentMdFinding:
